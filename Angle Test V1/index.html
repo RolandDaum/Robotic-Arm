@@ -10,28 +10,29 @@
         <h1>Const Values</h1>
         <form>
             <label>A lenght</label>
-            <input type="number" id="input_al" value="2">
+            <input type="number" step="0.01" min="0" id="input_al">
         </form>
         <form>
             <label>B lenght</label>
-            <input type="number" id="input_bl" value="2">
+            <input type="number" step="0.01" min="0" id="input_bl">
         </form>
         <form>
             <label>C lenght</label>
-            <input type="number" id="input_cl" value="1">
+            <input type="number" step="0.1" min="0" id="input_cl">
         </form>
     </div>
     <div>
         <h1>Variable Values</h1>
         <form>
             <label>X lenght</label>
-            <input type="number" id="input_xl" value="3">
+            <input type="number" step="0.1" id="input_xl">
+            <label id="xlminmax"></label>
         </form>
         <form>
             <label>OP Coordinates</label>
-            <input type="number" id="input_op1" value="2">
-            <input type="number" id="input_op2" value="2">
-            <input type="number" id="input_op3" value="2">
+            <input type="number" step="0.1" id="input_op1">
+            <input type="number" step="0.1" id="input_op2">
+            <input type="number" step="0.1" min="0" id="input_op3">
         </form>
     </div>
     <div>
@@ -40,6 +41,12 @@
         <h2 id="angle_EA"></h2>
         <h2 id="angle_AB"></h2>
         <h2 id="angle_BC"></h2>
+    </div>
+    <div>
+        <h1>Other calced stuff</h1>
+        <h2 id="3dlfromOrigin"></h2>
+        <h2 id="minabcL"></h2>
+        <h2 id="maxabcL"></h2>
     </div>
     <img src="./image.png">
 </body>
