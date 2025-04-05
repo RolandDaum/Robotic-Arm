@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(0,0,1, -1,-1,-1);
+    PositionAngle posa = new PositionAngle(-10,-10,25, 1,0,0);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -17,11 +17,11 @@ public class PositionAngle {
     // Identical length in order to reach everypoint without a third arm segment
     // TODO: Implement reverse point vector size/length claculation
     double l1 = 10;
+    double l2 = 5;
     double l3 = 50;
     double l4 = 50;
-    double l5 = 10;
-    double l6 = 10;
-    double l7 = 5;
+    double l5 = 0;
+    double l6 = 0;
 
     double t1;
     double t2;
@@ -56,7 +56,12 @@ public class PositionAngle {
     }
     // Calculates the Coordinates in the Quadrant 1 and 4. For Q2 and Q3 just rotate the arm
     private void calct2t3() {
-        double x = (Math.pow(p,2)+Math.pow(l3,2)-Math.pow(l4,2))/(2*Math.pow(p,2));
+        double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
+        double p1 = this.p1-(-(x*r1));
+        double p2 = this.p2-(-(x*r2));
+        double p3 = this.p3-(-(x*r3))-(l1+l2);
+        double p = Math.sqrt(Math.pow(p1,2) + Math.pow(p2, 2)+ Math.pow(p3,2));
+        x = (Math.pow(p,2)+Math.pow(l3,2)-Math.pow(l4,2))/(2*Math.pow(p,2));
         double alpha = Math.acos((x*p)/l3);
         double beta = Math.atan2(Math.sqrt(Math.pow(p1,2) + Math.pow(p2,2)), p3);
         double gama = Math.acos(((1-x)*p)/l4);
