@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(50,50,0, 0,1,1);
+    PositionAngle posa = new PositionAngle(0,0,100, 0,0,1);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -20,11 +20,14 @@ public class PositionAngle {
     double l2 = 20;
     double l3 = 50;
     double l4 = 50;
-    double l5 = 20;
+    double l5 = 20+40;
     double l6 = 40; 
+    double lq;
 
     double[] vl3;
     double[] vl45;
+    double[] vl6;
+    double[] vq;
 
     double t1;
     double t2;
@@ -36,15 +39,9 @@ public class PositionAngle {
     public PositionAngle(double p1, double p2, double p3, double r1, double r2, double r3) {
         // TODO: Add special case for P(0|0)
         // TODO: Update this max length thing and make it it own function. NOTE: it prob. doesn't work like this anymore cause of the P destination translation
-        // if (Math.sqrt(Math.pow(p1,2) + Math.pow(p2,2) + Math.pow(p3,2)) > (l3+l4)) {
-        //     this.p1 = 5;
-        //     this.p2 = 5;
-        //     System.out.println("NON REACHABLE POINT");
-        // } else {
-            this.p1 = p1;
-            this.p2 = p2;
-            this.p3 = p3;
-        // }
+        this.p1 = p1;
+        this.p2 = p2;
+        this.p3 = p3;
         p = Math.sqrt(Math.pow(this.p1,2)+Math.pow(this.p2,2)+Math.pow(this.p3,2));
         this.r1 = r1;
         this.r2 = r2;
@@ -58,27 +55,32 @@ public class PositionAngle {
         calct4t5t6();
     }
     private void calct1() {
-        double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
-        double p1 = this.p1-(-(x*r1));
-        double p2 = this.p2-(-(x*r2));
-        double p3 = this.p3-(-(x*r3))-(l1+l2);
+        double x = l6/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
+        vl6 = new double[3];
+        vl6[0] = x*r1;
+        vl6[1] = x*r2;
+        vl6[2] = x*r3;
 
-        t1 = Math.atan2(p1,p2);
+        vq = new double[3];
+        // vq[0] = this.p1-vl6[0];
+        // vq[1] = this.p2-vl6[1];
+        // vq[2] = this.p3-vl6[2]-(l1+l2);
+        vq[0] = this.p1;
+        vq[1] = this.p2;
+        vq[2] = this.p3-(l1+l2);
+        lq = Math.sqrt(Math.pow(vq[0],2) + Math.pow(vq[1],2) + Math.pow(vq[2],2));
+
+        t1 = Math.atan2(vq[0],vq[1]);
     }
-    // Calculates the Coordinates in the Quadrant 1 and 4. For Q2 and Q3 just rotate the arm
     private void calct2t3() {
-        double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
-        double p1 = this.p1-(-(x*r1));
-        double p2 = this.p2-(-(x*r2));
-        double p3 = this.p3-(-(x*r3))-(l1+l2);
-        double p = Math.sqrt(Math.pow(p1,2) + Math.pow(p2, 2)+ Math.pow(p3,2));
+        double x = (Math.pow(lq,2) + Math.pow(l3,2) - Math.pow(l4+l5,2) ) / (2 * Math.pow(lq,2));
 
-        x = (Math.pow(p,2)+Math.pow(l3,2)-Math.pow((l4+l5),2))/(2*Math.pow(p,2));
-        double alpha = Math.acos((x*p)/l3);
-        double beta = Math.atan2(Math.sqrt(Math.pow(p1,2) + Math.pow(p2,2)), p3);
-        double gama = Math.acos(((1-x)*p)/(l4+l5));
-        t2 = (beta-alpha);
-        t3 = alpha + gama;
+        double h = Math.sqrt(Math.pow(l3,2)-Math.pow(x*lq,2));
+        double alpha = Math.atan2(h,x*lq);
+        double gama = Math.atan2(h, (1-x)*lq);
+        double beta = Math.atan2(Math.sqrt(Math.pow(vq[0],2)+Math.pow(vq[1],2)),vq[2]);
+        t2 = beta - alpha;
+        t3 = -(alpha + gama);
     }
     private void calcVl3Vl45() {
         vl3 = new double[3];
@@ -87,19 +89,20 @@ public class PositionAngle {
         vl3[2] = Math.cos(t2) * l3;
 
         vl45 = new double[3];
-        vl45[0] = Math.sin(t1) * Math.sin(t3-t2) * l3;
-        vl45[1] = Math.cos(t1) * Math.sin(t3-t2) * l3;
-        vl45[2] = Math.cos(t3-t2) * l3;
+        vl45[0] = Math.sin(t1) * Math.sin(t3-t2) * (l4+l5);
+        vl45[1] = Math.cos(t1) * Math.sin(t3-t2) * (l4+l5);
+        vl45[2] = Math.cos(t3-t2) * (l4+l5);
     }
     private void calct4t5t6() {
-        double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
-        double l61 = x*r1;
-        double l62 = x*r2;
-        double l63 = x*r3;
+        // double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
+        // double l61 = x*r1;
+        // double l62 = x*r2;
+        // double l63 = x*r3;
 
-        t4 = Math.atan2(r2,r1);
-        t5 = (t3-t2)-(Math.PI/2); // IST RICHTIG, damit es gerade nach oben zeigt
- 
+        // t4 = Math.atan2(r2,r1);
+        // t5 = t3 - t2;
+        t4 = 0;
+        t5 = 0;
         t6 = 0;
     }
 
