@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(50,50,50, 1,1,-1);
+    PositionAngle posa = new PositionAngle(0,0,50, 1,1,1);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -104,10 +104,40 @@ public class PositionAngle {
 
 
         // NEW
-        double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(vl45[0],2)+Math.pow(vl45[1],2)+Math.pow(vl45[2],2));
-        double aK = Math.sqrt(Math.pow(x*vl45[0],2)+Math.pow(x*vl45[1],2)+Math.pow(x*vl45[2],2));
-        double gK = Math.sqrt(Math.pow(vl6[0]-(x*vl45[0]),2)+Math.pow(vl6[1]-(x*vl45[1]),2)+Math.pow(vl6[2]-(x*vl45[2]),2));
-        t5 = Math.atan2(gK,aK)+Math.PI;
+        // double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(vl45[0],2)+Math.pow(vl45[1],2)+Math.pow(vl45[2],2));
+        // double aK = Math.sqrt(Math.pow(x*vl45[0],2)+Math.pow(x*vl45[1],2)+Math.pow(x*vl45[2],2));
+        // double gK = Math.sqrt(Math.pow(vl6[0]-(x*vl45[0]),2)+Math.pow(vl6[1]-(x*vl45[1]),2)+Math.pow(vl6[2]-(x*vl45[2]),2));
+        // t5 = Math.atan2(gK,aK)+Math.PI;
+        // System.out.println("aKgK:  " + (360*t5)/(2*Math.PI));
+        
+        // // ^^ working in flat directions but not in 3D spaced ones
+
+        // // OR (Phasenverschoben)
+        // t5 = Math.acos((vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/((l4+l5)*l6))+(Math.PI/2);
+        // System.out.println("Vector Angle:  " + (360*t5)/(2*Math.PI));
+
+        // t5 and t4 if l34 is vertical (0|0|1)
+        // t5 = Math.atan2(Math.sqrt(Math.pow(r2,2) + Math.pow(r3,2)),r3);
+        // t4 = Math.atan2(r2,r1);
+
+        // OR (Phasenverschoben)
+        t5 = Math.acos((vl45[0]*r1+vl45[1]*r2+vl45[2]*r3)/((l4+l5)*(Math.sqrt(Math.pow(r1,2)+Math.pow(r2,2)+Math.pow(r3,2)))));
+        System.out.println("Vector Angle:  " + (360*t5)/(2*Math.PI));
+
+        double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(l4+l5,2));
+        double rp1 = r1-(x*vl45[0]);
+        double rp2 = r2-(x*vl45[1]);
+        double rp3 = r3-(x*vl45[2]);
+
+        double y1 = (rp3*0)-(rp2*l6);
+        double y2 = (rp1*l6)-(rp3*0);
+        double y3 = (rp2*0)-(rp1*0);
+
+        t4 = Math.acos(
+            (rp1*y1+rp2*y2+rp3*y3)/
+            (Math.sqrt(Math.pow(rp1,2)+Math.pow(rp2,2)+Math.pow(rp3,2)))*
+            (Math.sqrt(Math.pow(y1,2)+Math.pow(y2,2)+Math.pow(y3,2))))+(Math.PI/2);
+
     }
 
     @Override
