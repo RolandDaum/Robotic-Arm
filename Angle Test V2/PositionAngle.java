@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(0,0,100, 0,0,1);
+    PositionAngle posa = new PositionAngle(50,50,50, 1,1,-1);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -20,7 +20,7 @@ public class PositionAngle {
     double l2 = 20;
     double l3 = 50;
     double l4 = 50;
-    double l5 = 20+40;
+    double l5 = 20;
     double l6 = 40; 
     double lq;
 
@@ -62,12 +62,9 @@ public class PositionAngle {
         vl6[2] = x*r3;
 
         vq = new double[3];
-        // vq[0] = this.p1-vl6[0];
-        // vq[1] = this.p2-vl6[1];
-        // vq[2] = this.p3-vl6[2]-(l1+l2);
-        vq[0] = this.p1;
-        vq[1] = this.p2;
-        vq[2] = this.p3-(l1+l2);
+        vq[0] = this.p1-vl6[0];
+        vq[1] = this.p2-vl6[1];
+        vq[2] = this.p3-vl6[2]-(l1+l2);
         lq = Math.sqrt(Math.pow(vq[0],2) + Math.pow(vq[1],2) + Math.pow(vq[2],2));
 
         t1 = Math.atan2(vq[0],vq[1]);
@@ -99,16 +96,24 @@ public class PositionAngle {
         // double l62 = x*r2;
         // double l63 = x*r3;
 
+
+        // KIND A WORKING
         // t4 = Math.atan2(r2,r1);
-        // t5 = t3 - t2;
-        t4 = 0;
-        t5 = 0;
-        t6 = 0;
+        // t5 = -(t3 - t2); // Rotates the tip vertical up
+        // t6 = 0;
+
+
+        // NEW
+        double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(vl45[0],2)+Math.pow(vl45[1],2)+Math.pow(vl45[2],2));
+        double aK = Math.sqrt(Math.pow(x*vl45[0],2)+Math.pow(x*vl45[1],2)+Math.pow(x*vl45[2],2));
+        double gK = Math.sqrt(Math.pow(vl6[0]-(x*vl45[0]),2)+Math.pow(vl6[1]-(x*vl45[1]),2)+Math.pow(vl6[2]-(x*vl45[2]),2));
+        t5 = Math.atan2(gK,aK)+Math.PI;
     }
 
     @Override
     public String toString() {
-        return "Theta 1: " + (360*t1)/(2*Math.PI) + 
+        return
+        "Theta 1: " + (360*t1)/(2*Math.PI) + 
         "\nTheta 2: " + (360*t2)/(2*Math.PI) + 
         "\nTheta 3: " + (360*t3)/(2*Math.PI) + 
         "\nTheta 4: " + (360*t4)/(2*Math.PI) + 
