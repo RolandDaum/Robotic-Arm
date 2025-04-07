@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(0,0,50, 1,1,1);
+    PositionAngle posa = new PositionAngle(100,100,0,-2,-2,-2);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -39,8 +39,8 @@ public class PositionAngle {
     public PositionAngle(double p1, double p2, double p3, double r1, double r2, double r3) {
         // TODO: Add special case for P(0|0)
         // TODO: Update this max length thing and make it it own function. NOTE: it prob. doesn't work like this anymore cause of the P destination translation
-        this.p1 = p1;
-        this.p2 = p2;
+        this.p1 = -p1;
+        this.p2 = -p2;
         this.p3 = p3;
         p = Math.sqrt(Math.pow(this.p1,2)+Math.pow(this.p2,2)+Math.pow(this.p3,2));
         this.r1 = r1;
@@ -91,38 +91,14 @@ public class PositionAngle {
         vl45[2] = Math.cos(t3-t2) * (l4+l5);
     }
     private void calct4t5t6() {
-        // double x = (-l6)/(Math.sqrt(Math.pow(r1,2) + Math.pow(r2, 2)+ Math.pow(r3,2)));
-        // double l61 = x*r1;
-        // double l62 = x*r2;
-        // double l63 = x*r3;
-
-
-        // KIND A WORKING
-        // t4 = Math.atan2(r2,r1);
-        // t5 = -(t3 - t2); // Rotates the tip vertical up
-        // t6 = 0;
-
-
-        // NEW
-        // double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(vl45[0],2)+Math.pow(vl45[1],2)+Math.pow(vl45[2],2));
-        // double aK = Math.sqrt(Math.pow(x*vl45[0],2)+Math.pow(x*vl45[1],2)+Math.pow(x*vl45[2],2));
-        // double gK = Math.sqrt(Math.pow(vl6[0]-(x*vl45[0]),2)+Math.pow(vl6[1]-(x*vl45[1]),2)+Math.pow(vl6[2]-(x*vl45[2]),2));
-        // t5 = Math.atan2(gK,aK)+Math.PI;
-        // System.out.println("aKgK:  " + (360*t5)/(2*Math.PI));
-        
-        // // ^^ working in flat directions but not in 3D spaced ones
-
-        // // OR (Phasenverschoben)
-        // t5 = Math.acos((vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/((l4+l5)*l6))+(Math.PI/2);
-        // System.out.println("Vector Angle:  " + (360*t5)/(2*Math.PI));
-
-        // t5 and t4 if l34 is vertical (0|0|1)
-        // t5 = Math.atan2(Math.sqrt(Math.pow(r2,2) + Math.pow(r3,2)),r3);
-        // t4 = Math.atan2(r2,r1);
-
-        // OR (Phasenverschoben)
-        t5 = Math.acos((vl45[0]*r1+vl45[1]*r2+vl45[2]*r3)/((l4+l5)*(Math.sqrt(Math.pow(r1,2)+Math.pow(r2,2)+Math.pow(r3,2)))));
-        System.out.println("Vector Angle:  " + (360*t5)/(2*Math.PI));
+   
+        // t5 = Math.acos((vl45[0]*r1+vl45[1]*r2+vl45[2]*r3)/((l4+l5)*(Math.sqrt(Math.pow(r1,2)+Math.pow(r2,2)+Math.pow(r3,2)))));^
+        // angle = atan2(norm(cross(a,b)), dot(a,b));
+        double crossRVL451 = (r3*vl45[1])-(r2*vl45[2]);
+        double crossRVL452 = (r1*vl45[2])-(r3*vl45[0]);
+        double crossRVL453 = (r2*vl45[0])-(r1*vl45[1]);
+        t5 = Math.atan2(Math.sqrt(Math.pow(crossRVL451,2)+Math.pow(crossRVL452,2)+Math.pow(crossRVL453,2)),(vl45[0]*r1+vl45[1]*r2+vl45[2]*r3));
+        t5 = t5 + ((5*Math.PI)/8);
 
         double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(l4+l5,2));
         double rp1 = r1-(x*vl45[0]);
@@ -133,10 +109,16 @@ public class PositionAngle {
         double y2 = (rp1*l6)-(rp3*0);
         double y3 = (rp2*0)-(rp1*0);
 
-        t4 = Math.acos(
-            (rp1*y1+rp2*y2+rp3*y3)/
-            (Math.sqrt(Math.pow(rp1,2)+Math.pow(rp2,2)+Math.pow(rp3,2)))*
-            (Math.sqrt(Math.pow(y1,2)+Math.pow(y2,2)+Math.pow(y3,2))))+(Math.PI/2);
+        // T4 still has the issue of being of by + or - 90 deg
+        // t4 = Math.acos(
+        //     (rp1*y1+rp2*y2+rp3*y3)/
+        //     (Math.sqrt(Math.pow(rp1,2)+Math.pow(rp2,2)+Math.pow(rp3,2)))*
+        //     (Math.sqrt(Math.pow(y1,2)+Math.pow(y2,2)+Math.pow(y3,2))));
+        double crossRPY1 = (rp3*y2)-(rp2*y3);
+        double crossRPY2 = (rp1*y3)-(rp3*y1);
+        double crossRPY3 = (rp2*y1)-(rp1*y2);
+        t4 = Math.atan2(Math.sqrt(Math.pow(crossRPY1,2)+Math.pow(crossRPY2,2)+Math.pow(crossRPY3,2)),(y1*rp1+y2*rp2+y3*rp3));
+        t4 = t4 - (Math.PI/2);
 
     }
 
