@@ -1,5 +1,5 @@
 public void main() {
-    PositionAngle posa = new PositionAngle(100,100,0,-2,-2,-2);
+    PositionAngle posa = new PositionAngle(100,55,-5,-1,0,0);
     posa.calc();
     System.out.println(posa.toString());
 }
@@ -16,11 +16,11 @@ public class PositionAngle {
 
     // Identical length of l3 and l4 in order to reach everypoint without a third arm segment
     // TODO: Implement reverse point vector size/length claculation
-    double l1 = 10;
+    double l1 = 20;
     double l2 = 20;
-    double l3 = 50;
-    double l4 = 50;
-    double l5 = 20;
+    double l3 = 60;
+    double l4 = 60;
+    double l5 = 50;
     double l6 = 40; 
     double lq;
 
@@ -91,14 +91,18 @@ public class PositionAngle {
         vl45[2] = Math.cos(t3-t2) * (l4+l5);
     }
     private void calct4t5t6() {
-   
+        // IMRROVE AND REUNDERSTAND THIS SHIT
+        // TODO: Rewrite all with extra Vector class object
+
+
+
         // t5 = Math.acos((vl45[0]*r1+vl45[1]*r2+vl45[2]*r3)/((l4+l5)*(Math.sqrt(Math.pow(r1,2)+Math.pow(r2,2)+Math.pow(r3,2)))));^
         // angle = atan2(norm(cross(a,b)), dot(a,b));
         double crossRVL451 = (r3*vl45[1])-(r2*vl45[2]);
         double crossRVL452 = (r1*vl45[2])-(r3*vl45[0]);
         double crossRVL453 = (r2*vl45[0])-(r1*vl45[1]);
-        t5 = Math.atan2(Math.sqrt(Math.pow(crossRVL451,2)+Math.pow(crossRVL452,2)+Math.pow(crossRVL453,2)),(vl45[0]*r1+vl45[1]*r2+vl45[2]*r3));
-        t5 = t5 + ((5*Math.PI)/8);
+        t5 = -1 * Math.atan2(Math.sqrt(Math.pow(crossRVL451,2)+Math.pow(crossRVL452,2)+Math.pow(crossRVL453,2)),(vl45[0]*r1+vl45[1]*r2+vl45[2]*r3));
+        // t5 = t5 + ((5*Math.PI)/8);
 
         double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(l4+l5,2));
         double rp1 = r1-(x*vl45[0]);
@@ -118,7 +122,8 @@ public class PositionAngle {
         double crossRPY2 = (rp1*y3)-(rp3*y1);
         double crossRPY3 = (rp2*y1)-(rp1*y2);
         t4 = Math.atan2(Math.sqrt(Math.pow(crossRPY1,2)+Math.pow(crossRPY2,2)+Math.pow(crossRPY3,2)),(y1*rp1+y2*rp2+y3*rp3));
-        t4 = t4 - (Math.PI/2);
+        // t4 = t4 - (Math.PI/2);
+        //^^ Cant be correct, always something like 90deg
 
     }
 
