@@ -4,9 +4,12 @@ public class Vector3D extends Vector {
     public Vector3D(double x, double y, double z) {
         super(new double[]{x,y,z});
     }
-    public double x() { return getC(0); }
-    public double y() { return getC(1); }
-    public double z() { return getC(2); }
+    public Vector3D(Vector v) {
+        super(new double[]{v.c(0),v.c(1),v.c(2)});
+    }
+    public double x() { return c(0); }
+    public double y() { return c(1); }
+    public double z() { return c(2); }
    
     public double xAngle() { return Vector3D.xAngle(this); }
     public double yAngle() { return Vector3D.yAngle(this); }
@@ -36,6 +39,24 @@ public class Vector3D extends Vector {
         v.add(Vector3D.scale(Vector3D.crossP(v, axis), theta));
         v.add(Vector3D.scale(v, Vector3D.dotP(v, axis)*(1-Math.cos(theta))));
     }
+    
+    // Vector class indirect Overrides, cause of wrong return types when calling the e.g. add method from Vector.add which returns Vector object, but here we want Vector3D object
+    public static Vector3D add(Vector3D v1, Vector3D v2) {
+        Vector v = Vector.add(v1, v2);
+        return new Vector3D(v);
+    }
+    public static Vector3D subtract(Vector3D v1, Vector3D v2) {
+        Vector v = Vector.subtract(v1, v2);
+        return new Vector3D(v);
+    }
+    public static Vector3D scaleToSize(Vector3D v, double factor) {
+        Vector vScaledToSize = Vector.scaleToSize(v, factor);
+        return new Vector3D(vScaledToSize);
+    }
+    public static Vector3D scale(Vector3D v, double factor) {
+        Vector vScaled = Vector.scale(v, factor);
+        return new Vector3D(vScaled);
+    }
 
     @Override
     protected void assignV(Vector v) {
@@ -43,5 +64,5 @@ public class Vector3D extends Vector {
             throw new IllegalArgumentException("Only Vector3D objects are allowed.");
         }
         super.assignV(v);
-    }
+    }   
 }

@@ -1,5 +1,5 @@
 package Objects;
-class Vector {
+public class Vector {
     private double[] v;
     private int dimension;
     private boolean unitized = false;
@@ -34,7 +34,7 @@ class Vector {
      * @param d Dimension index.
      * @return Coordinate value.
      */
-    public double getC(int d) {
+    public double c(int d) {
         if (d >= dimension) {
             throw new IllegalArgumentException("Dimension index out of bounds.");
         }
@@ -80,6 +80,7 @@ class Vector {
      * @param factor Scaling factor.
      */
     public void scale(double factor) { assignV(Vector.scale(this, factor)); }
+    public void scaleToSize(double size) { assignV(Vector.scaleToSize(this, size)); }
     /**
      * Converts this vector to a unit vector.
      */
@@ -100,11 +101,10 @@ class Vector {
     public static double dotP(Vector v1, Vector v2) {
         double sum = 0;
         for (int i = 0; i < Math.min(v1.getD(), v2.getD()); i++) {
-            sum += (v1.getC(i) * v2.getC(i));
+            sum += (v1.c(i) * v2.c(i));
         }
         return sum;
     }
-
     /**
      * Computes the norm (magnitude) of a vector.
      * @param v Vector to compute norm for.
@@ -113,7 +113,7 @@ class Vector {
     public static double norm(Vector v) {
         double sqrSum = 0;
         for (int i = 0; i < v.getD(); i++) {
-            sqrSum += Math.pow(v.getC(i),2);
+            sqrSum += Math.pow(v.c(i),2);
         }
         return Math.sqrt(sqrSum);
     }
@@ -129,7 +129,7 @@ class Vector {
         }
         Vector v = new Vector(v1.getD());
         for (int i = 0; i < v.getD(); i++) {
-            v.setC(i, v1.getC(i) + v2.getC(i));
+            v.setC(i, v1.c(i) + v2.c(i));
         }
         return v;
     }
@@ -149,13 +149,23 @@ class Vector {
      * Scales a vector by a factor.
      * @param v Vector to scale.
      * @param factor Scaling factor.
+     * @return New sclaed Vector
      */
     public static Vector scale(Vector v, double factor) {
         Vector vN = new Vector(v.getD());
         for (int i = 0; i < v.getD(); i++) {
-            vN.setC(i, v.getC(i)*factor);
+            vN.setC(i, v.c(i)*factor);
         }
         return vN;
+    }
+    /**
+     * Scales a vector v to size
+     * @param v
+     * @param size
+     * @return New scaled to size Vector
+     */
+    public static Vector scaleToSize(Vector v, double size) {
+        return Vector.scale(v, size/v.norm());
     }
     /**
      * Converts a vector to a unit vector.
@@ -169,5 +179,16 @@ class Vector {
         v = Vector.scale(v, 1 / norm);
         v.unitized = true;
         return v;
+    }
+
+    // TODO: Add collinear check
+
+    @Override
+    public String toString() {
+        String str = "(";
+        for (int i = 0; i < v.length; i++) {
+            str += v[i] + "|";
+        }
+        return str + ")";
     }
 }

@@ -101,9 +101,14 @@ public class PositionAngle {
         double crossRVL451 = (r3*vl45[1])-(r2*vl45[2]);
         double crossRVL452 = (r1*vl45[2])-(r3*vl45[0]);
         double crossRVL453 = (r2*vl45[0])-(r1*vl45[1]);
-        t5 = -1 * Math.atan2(Math.sqrt(Math.pow(crossRVL451,2)+Math.pow(crossRVL452,2)+Math.pow(crossRVL453,2)),(vl45[0]*r1+vl45[1]*r2+vl45[2]*r3));
+        t5 = -1 * Math.atan2(
+            Math.sqrt(Math.pow(crossRVL451,2)+Math.pow(crossRVL452,2)+Math.pow(crossRVL453,2)),
+            (vl45[0]*r1+vl45[1]*r2+vl45[2]*r3)
+        );
         // t5 = t5 + ((5*Math.PI)/8);
 
+
+        
         double x = (vl45[0]*vl6[0]+vl45[1]*vl6[1]+vl45[2]*vl6[2])/(Math.pow(l4+l5,2));
         double rp1 = r1-(x*vl45[0]);
         double rp2 = r2-(x*vl45[1]);
