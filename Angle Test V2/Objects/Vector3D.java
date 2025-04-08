@@ -15,11 +15,15 @@ public class Vector3D extends Vector {
     public double yAngle() { return Vector3D.yAngle(this); }
     public double zAngle() { return Vector3D.zAngle(this); }
 
+    public void rotate(Vector3D axis, double theta) {
+        assignV(Vector3D.rotate(this, axis, theta));
+    }  
+
     // STATIC METHODS
     public static double xAngle(Vector3D v) { return Vector3D.vAngle(v, new Vector3D(1,0,0)); }
     public static double yAngle(Vector3D v) { return Vector3D.vAngle(v, new Vector3D(0,1,0)); }
     public static double zAngle(Vector3D v) { return Vector3D.vAngle(v, new Vector3D(0,0,1)); }
-
+    // TODO: Add rotation around Angle
     public static double vAngle(Vector3D v1, Vector3D v2) {
         if (v1.norm() == 0 || v2.norm() == 0) {
             throw new IllegalArgumentException("No angle between zero vectors");
@@ -34,10 +38,12 @@ public class Vector3D extends Vector {
             (v1.x() * v2.y()) - (v1.y() * v2.x())
         );
     }
-    public static void rotate(Vector3D v, Vector3D axis, double theta) {
-        v.scale(Math.cos(theta));
-        v.add(Vector3D.scale(Vector3D.crossP(v, axis), theta));
-        v.add(Vector3D.scale(v, Vector3D.dotP(v, axis)*(1-Math.cos(theta))));
+    public static Vector3D rotate(Vector3D v, Vector3D axis, double theta) {
+        Vector3D vN = new Vector3D(v);
+        vN.scale(Math.cos(theta));
+        vN.add(Vector3D.scale(Vector3D.crossP(v, axis), theta));
+        vN.add(Vector3D.scale(v, Vector3D.dotP(v, axis)*(1-Math.cos(theta))));
+        return vN;
     }
     
     // Vector class indirect Overrides, cause of wrong return types when calling the e.g. add method from Vector.add which returns Vector object, but here we want Vector3D object
@@ -56,6 +62,10 @@ public class Vector3D extends Vector {
     public static Vector3D scale(Vector3D v, double factor) {
         Vector vScaled = Vector.scale(v, factor);
         return new Vector3D(vScaled);
+    }
+    public static Vector3D unitize(Vector3D v) {
+        Vector vUnitized = Vector.unitize(v);
+        return new Vector3D(vUnitized);
     }
 
     @Override
