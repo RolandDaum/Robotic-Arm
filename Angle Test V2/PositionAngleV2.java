@@ -3,7 +3,7 @@ import Objects.Vector;
 import Objects.Vector3D;
 
 public void main(String[] args) {
-    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(0,0,200), new Vector3D(0,0,1)); // x and y of Point vector *-1 !!!
+    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(36, -18, 118), new Vector3D(-2, -2,10)); // x and y of Point vector *-1 !!!
     System.out.println(idk);
 }
 public static double radDeg(double rad) {
@@ -49,6 +49,7 @@ public class PositionAngleV2 {
         );
 
         t3t4();
+        
     }
 
     void t0() {
@@ -71,43 +72,38 @@ public class PositionAngleV2 {
 
         // t[4] = Math.atan2(Vector3D.crossP(vD, vL34).norm(),Vector3D.dotP(vD, vL34)); // TODO: eventuell noch *-1
         double x = (Vector3D.dotP(vL34, vL5))/(Math.pow(l[3]+l[4],2));
-        Vector3D vL45P = Vector3D.subtract(vL5, Vector3D.scale(vL34, x));
-        Vector3D vRA = Vector3D.crossP(vL34,vL45P);
-        Vector3D vL45PU = Vector3D.unitize(vL45P);
-
-        t[3] = -Math.asin(
-    (
-        vL45PU.x() * (vL45PU.z() * vRA.x() + vRA.y()) + vL45PU.y() * (vL45PU.z() * vRA.y() - vRA.x()) + Math.pow(vL45PU.z(), 2) * vRA.z()
-    ) / Math.sqrt(
-        Math.pow(vL45PU.x(), 2) * Math.pow(vL45PU.z(), 2) * Math.pow(vRA.x(), 2)
-        + 2 * vL45PU.x() * (vL45PU.y() * vL45PU.z() * vRA.y() + (Math.pow(vL45PU.z(), 2) - 1) * vRA.z()) * vL45PU.z() * vRA.x()
-        + Math.pow(vL45PU.y(), 2) * Math.pow(vL45PU.z(), 2) * Math.pow(vRA.y(), 2)
-        + 2 * vL45PU.y() * vL45PU.z() * (Math.pow(vL45PU.z(), 2) - 1) * vRA.y() * vRA.z()
-        + Math.pow(vL45PU.z(), 4) * Math.pow(vRA.z(), 2)
-        - 2 * Math.pow(vL45PU.z(), 2) * Math.pow(vRA.z(), 2)
-        + Math.pow(vRA.z(), 2)
-        + 1
-    )
-    ) - Math.atan(
-        vL45PU.x() * vL45PU.z() * vRA.x() + vL45PU.y() * vL45PU.z() * vRA.y() + (Math.pow(vL45PU.z(), 2) - 1) * vRA.z()
-    ) + (2 * 1 + 1) * Math.PI;
-
-
-
+        Vector3D vL45P = Vector3D.add(vL5, Vector3D.scale(vL34, x)); // PROJECTION ONTO T3 ROTATION Plane OF THE vL5
+        Vector3D vRAxisRotatetWithT3 = Vector3D.crossP(vL34,vL45P); // VECTOR OF FINAL ROTATION AXIS in Plane
 
         // double vT3AxisToBecome = Vector3D.vAngle(vL34, vL45P);
-        // Vector3D vAxisNotT3Rotated = new Vector3D(-1,0,0);
-        // vAxisNotT3Rotated.rotate(new Vector3D(0,0,1), t[0]);
+        Vector3D vAxisNotT3Rotated = new Vector3D(-1,0,0);
+        vAxisNotT3Rotated.rotate(new Vector3D(0,0,1), t[0]+(Math.PI));
 
-        // t[3] = Vector3D.vAngle(vRAxisRotatetWithT3, vAxisNotT3Rotated);
+
+        t[3] = Vector3D.vAngle(vRAxisRotatetWithT3, vAxisNotT3Rotated);
+
+        // TODO: t[3] still wrong and not working as intended
+
+
+   
+
 
         // // System.out.println(Vector3D.unitize(vAxisNotT3Rotated));
-        // System.out.println(vAxisNotT3Rotated);
+        // System.out.println(Vector3D.unitize(vAxisNotT3Rotated));
 
         // System.out.println(Vector3D.unitize(Vector3D.rotate(vRAxisRotatetWithT3,vL45P, (3*Math.PI/2)+t[3])));
 
         
         // t[3] = Math.atan2(Vector3D.crossP(vDP, vY).norm(),Vector3D.dotP(vDP, vY));
+
+
+        
+
+        // NATIVE normal rotation if vL34 has direction 0|0|1
+        // t[3] = Math.atan2(vD.z(),vD.x());
+        // t[4] = Math.atan2(vD.x(),vD.y());
+        // t[5] = Math.atan2(vD.z(),vD.y());
+
 
     }
 
