@@ -28,8 +28,18 @@ public class Vector3D extends Vector {
         if (v1.norm() == 0 || v2.norm() == 0) {
             throw new IllegalArgumentException("No angle between zero vectors");
         }
-        return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
-        // return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
+        // return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
+        return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
+    }
+    public static double vAngleN(Vector3D v1, Vector3D v2, Vector n) {
+        v1.unitize();
+        v2.unitize();
+        double angle = Math.acos(Vector3D.dotP(v1, v2));
+        Vector3D cross = Vector3D.crossP(v1, v2);
+        if (Vector3D.dotP(n,cross) < 0) {
+            angle = -angle;
+        }
+        return angle;
     }
     public static Vector3D crossP(Vector3D v1, Vector3D v2) {
         return new Vector3D(
@@ -39,6 +49,7 @@ public class Vector3D extends Vector {
         );
     }
     public static Vector3D rotate(Vector3D v, Vector3D axis, double theta) {
+        axis.unitize(); // HAS TO BE IN ORDER TO WORK
         Vector3D vN = new Vector3D(v);
         vN.scale(Math.cos(theta));
         vN.add(Vector3D.scale(Vector3D.crossP(v, axis), Math.sin(theta)));

@@ -1,7 +1,9 @@
+import java.util.Vector;
+
 import Objects.Vector3D;
 
 public void main(String[] args) {
-    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(75,75,10), new Vector3D(1,0,0)); // x and y of Point vector *-1 !!!
+    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(-50,-40,0), new Vector3D(1,1,1)); // x and y of Point vector *-1 !!!
     System.out.println(idk);
 }
 public static double radDeg(double rad) {
@@ -30,7 +32,7 @@ public class PositionAngleV2 {
 
     void calc() {
         vL5 = Vector3D.scaleToSize(vD, l[5]);
-        vQ = Vector3D.subtract(Vector3D.subtract(vP, vL5), new Vector3D(0, 0, l[0] + l[1]));   
+        vQ = Vector3D.subtract(Vector3D.subtract(vP, vL5), new Vector3D(0, 0, (l[0] + l[1])));   
         
         t0();
         t1t2();
@@ -65,14 +67,11 @@ public class PositionAngleV2 {
         t[2] = -(alpha + gama);
     }
     void t3t4() {
-        t[4] = -1 * Vector3D.vAngle(vL5, vL34);
+        Vector3D vREALT4RotatingAxis = Vector3D.crossP(vL34, vL5);
+        Vector3D vT4RotatingAxisInXYPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
+        t[3] = Vector3D.vAngle(vREALT4RotatingAxis, vT4RotatingAxisInXYPlane);
 
-        Vector3D vNvL34vL5 = Vector3D.crossP(vL34, vL5);
-
-        Vector3D vAxisNotT3Rotated = new Vector3D(1,0,0);
-        vAxisNotT3Rotated.rotate(new Vector3D(0,0,1), t[0]);
-
-        t[3] = Vector3D.vAngle(vNvL34vL5, vAxisNotT3Rotated);
+        t[4] = -Vector3D.vAngle(vL34, vL5);
     }
 
     @Override
