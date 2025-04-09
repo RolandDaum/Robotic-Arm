@@ -1,9 +1,7 @@
-
-import Objects.Vector;
 import Objects.Vector3D;
 
 public void main(String[] args) {
-    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(36, -18, 118), new Vector3D(-2, -2,10)); // x and y of Point vector *-1 !!!
+    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(75,75,10), new Vector3D(1,0,0)); // x and y of Point vector *-1 !!!
     System.out.println(idk);
 }
 public static double radDeg(double rad) {
@@ -67,44 +65,14 @@ public class PositionAngleV2 {
         t[2] = -(alpha + gama);
     }
     void t3t4() {
-        // t[4] = Vector3D.vAngle(vD, vL34);
         t[4] = -1 * Vector3D.vAngle(vL5, vL34);
 
-        // t[4] = Math.atan2(Vector3D.crossP(vD, vL34).norm(),Vector3D.dotP(vD, vL34)); // TODO: eventuell noch *-1
-        double x = (Vector3D.dotP(vL34, vL5))/(Math.pow(l[3]+l[4],2));
-        Vector3D vL45P = Vector3D.add(vL5, Vector3D.scale(vL34, x)); // PROJECTION ONTO T3 ROTATION Plane OF THE vL5
-        Vector3D vRAxisRotatetWithT3 = Vector3D.crossP(vL34,vL45P); // VECTOR OF FINAL ROTATION AXIS in Plane
+        Vector3D vNvL34vL5 = Vector3D.crossP(vL34, vL5);
 
-        // double vT3AxisToBecome = Vector3D.vAngle(vL34, vL45P);
-        Vector3D vAxisNotT3Rotated = new Vector3D(-1,0,0);
-        vAxisNotT3Rotated.rotate(new Vector3D(0,0,1), t[0]+(Math.PI));
+        Vector3D vAxisNotT3Rotated = new Vector3D(1,0,0);
+        vAxisNotT3Rotated.rotate(new Vector3D(0,0,1), t[0]);
 
-
-        t[3] = Vector3D.vAngle(vRAxisRotatetWithT3, vAxisNotT3Rotated);
-
-        // TODO: t[3] still wrong and not working as intended
-
-
-   
-
-
-        // // System.out.println(Vector3D.unitize(vAxisNotT3Rotated));
-        // System.out.println(Vector3D.unitize(vAxisNotT3Rotated));
-
-        // System.out.println(Vector3D.unitize(Vector3D.rotate(vRAxisRotatetWithT3,vL45P, (3*Math.PI/2)+t[3])));
-
-        
-        // t[3] = Math.atan2(Vector3D.crossP(vDP, vY).norm(),Vector3D.dotP(vDP, vY));
-
-
-        
-
-        // NATIVE normal rotation if vL34 has direction 0|0|1
-        // t[3] = Math.atan2(vD.z(),vD.x());
-        // t[4] = Math.atan2(vD.x(),vD.y());
-        // t[5] = Math.atan2(vD.z(),vD.y());
-
-
+        t[3] = Vector3D.vAngle(vNvL34vL5, vAxisNotT3Rotated);
     }
 
     @Override

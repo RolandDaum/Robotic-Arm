@@ -41,7 +41,7 @@ public class Vector3D extends Vector {
     public static Vector3D rotate(Vector3D v, Vector3D axis, double theta) {
         Vector3D vN = new Vector3D(v);
         vN.scale(Math.cos(theta));
-        vN.add(Vector3D.scale(Vector3D.crossP(v, axis), theta));
+        vN.add(Vector3D.scale(Vector3D.crossP(v, axis), Math.sin(theta)));
         vN.add(Vector3D.scale(v, Vector3D.dotP(v, axis)*(1-Math.cos(theta))));
         return vN;
     }

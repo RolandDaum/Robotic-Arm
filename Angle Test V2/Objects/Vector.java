@@ -185,10 +185,14 @@ public class Vector {
 
     @Override
     public String toString() {
-        String str = "(";
+        String str = "Vektor(Punkt({";
         for (int i = 0; i < v.length; i++) {
-            str += v[i] + "|";
+            if (i == v.length-1) {
+                str += v[i];
+            } else {
+                str += v[i] + ",";
+            }
         }
-        return str + ")";
+        return str + "}))";
     }
 }
