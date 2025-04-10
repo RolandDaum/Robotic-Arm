@@ -9,9 +9,15 @@ public void main() {
 
     ForwardKinematics forwardKinematics = new ForwardKinematics(inverseKinematics.getT(), l);
     System.out.println(forwardKinematics);
-    System.out.println(vP.norm() + " | " + forwardKinematics.getvP().norm());
+    // System.out.println(vP.norm() + " | " + forwardKinematics.getvP().norm());
 
 
 
 }
 
+private static double radDeg(double rad) {
+    return (180*rad)/(Math.PI);
+}
+private static double degRad(double deg) {
+    return (Math.PI*deg)/180;
+}
