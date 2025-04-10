@@ -28,8 +28,8 @@ public class Vector3D extends Vector {
         if (v1.norm() == 0 || v2.norm() == 0) {
             throw new IllegalArgumentException("No angle between zero vectors");
         }
-        // return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
-        return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
+        return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
+        // return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
     }
     public static double vAngleN(Vector3D v1, Vector3D v2, Vector n) {
         v1.unitize();
@@ -49,12 +49,15 @@ public class Vector3D extends Vector {
         );
     }
     public static Vector3D rotate(Vector3D v, Vector3D axis, double theta) {
-        axis.unitize(); // HAS TO BE IN ORDER TO WORK
-        Vector3D vN = new Vector3D(v);
-        vN.scale(Math.cos(theta));
-        vN.add(Vector3D.scale(Vector3D.crossP(v, axis), Math.sin(theta)));
-        vN.add(Vector3D.scale(v, Vector3D.dotP(v, axis)*(1-Math.cos(theta))));
-        return vN;
+        Vector3D k = new Vector3D(axis);
+        k.unitize(); // HAS TO BE IN ORDER TO WORK
+        Vector3D vR = new Vector3D(v);
+
+        vR.scale(Math.cos(theta));
+        vR.add(Vector3D.scale(Vector3D.crossP(k,v), Math.sin(theta)));
+        vR.add(Vector3D.scale(k, Vector3D.dotP(k,v)*(1-Math.cos(theta))));
+
+        return vR;
     }
     
     // Vector class indirect Overrides, cause of wrong return types when calling the e.g. add method from Vector.add which returns Vector object, but here we want Vector3D object
@@ -75,8 +78,7 @@ public class Vector3D extends Vector {
         return new Vector3D(vScaled);
     }
     public static Vector3D unitize(Vector3D v) {
-        Vector vUnitized = Vector.unitize(v);
-        return new Vector3D(vUnitized);
+        return new Vector3D(Vector.unitize(v));
     }
 
     @Override

@@ -194,5 +194,14 @@ public class Vector {
             }
         }
         return str + "}))";
+        // String str = "(";
+        // for (int i = 0; i < v.length; i++) {
+        //     if (i == v.length-1) {
+        //         str += v[i];
+        //     } else {
+        //         str += v[i] + "|";
+        //     }
+        // }
+        // return str + ")";
     }
 }

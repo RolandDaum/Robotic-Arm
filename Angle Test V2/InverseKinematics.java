@@ -1,43 +1,39 @@
-import java.util.Vector;
-
+import Objects.Vector;
 import Objects.Vector3D;
 
-public void main(String[] args) {
-    PositionAngleV2 idk = new PositionAngleV2(new Vector3D(-50,-40,0), new Vector3D(1,1,1)); // x and y of Point vector *-1 !!!
-    System.out.println(idk);
-}
-public static double radDeg(double rad) {
-    return (180*rad)/(Math.PI);
-}
-public static double degRad(double deg) {
-    return (Math.PI*deg)/180;
-}
 
-public class PositionAngleV2 {
-    double[] l = new double[]{20,20,60,60,50,40}; // Arm Segment lenghts array
-    double[] t = new double[6]; // Theta rotation array
 
-    Vector3D vP; // Global Pin Point
-    Vector3D vD; // Direction to be pointing at vP
-    Vector3D vL3; // Vector of Arm segment L3
-    Vector3D vL34; // Vector of Arm segment L4 plus L5 (collinear)
-    Vector3D vL5; // Vector of Arm segment L6, same direction as vD, but different length
-    Vector3D vQ; // Vector of Angle T2 to T5
+public class InverseKinematics {
+    private double[] l; // Arm Segment lenghts array
+    private double[] t = new double[6]; // Theta rotation array
 
-    PositionAngleV2(Vector3D point, Vector3D direction) {
-        this.vP = point;
-        this.vD = direction;
+    private Vector3D vP; // Global Pin Point
+    private Vector3D vD; // Direction to be pointing at vP
+    private Vector3D vL2; // Vector of Arm segment L2
+    private Vector3D vL34; // Vector of Arm segment L4 plus L5 (collinear)
+    private Vector3D vL5; // Vector of Arm segment L6, same direction as vD, but different length
+    private Vector3D vQ; // Vector of Angle T2 to T5
+
+    public InverseKinematics(Vector3D vP, Vector3D vD, double[] l) {
+        this.vP = vP;
+        this.vD = vD;
+        this.l = l;
+        
         calc();
     }
 
-    void calc() {
+    public double[] getT() {
+        return t;
+    } 
+
+    private void calc() {
         vL5 = Vector3D.scaleToSize(vD, l[5]);
         vQ = Vector3D.subtract(Vector3D.subtract(vP, vL5), new Vector3D(0, 0, (l[0] + l[1])));   
         
         t0();
         t1t2();
 
-        vL3 = new Vector3D(
+        vL2 = new Vector3D(
             Math.sin(t[0]) * Math.sin(t[1]) * l[2],
             Math.cos(t[0]) * Math.sin(t[1]) * l[2],
             Math.cos(t[1]) * l[2]
@@ -49,13 +45,18 @@ public class PositionAngleV2 {
         );
 
         t3t4();
-        
+
+
+        System.out.println("vL2: " + vL2);
+        System.out.println("vL3: " + Vector3D.scaleToSize(vL34,l[3]));
+        System.out.println("vL4: " + Vector3D.scaleToSize(vL34,l[4]));
+        System.out.println("vL5: " + vL5 + "\n");
     }
 
-    void t0() {
+    private void t0() {
         t[0] = Math.atan2(vQ.c(0),vQ.c(1));
     }
-    void t1t2() {
+    private void t1t2() {
         double vQnorm = vQ.norm();
         double x = (Math.pow(vQnorm,2) + Math.pow(l[2],2) - Math.pow(l[3]+l[4],2) ) / (2 * Math.pow(vQnorm,2));
         double h = Math.sqrt(Math.pow(l[2],2)-Math.pow(x*vQnorm,2));
@@ -66,7 +67,7 @@ public class PositionAngleV2 {
         t[1] = beta - alpha;
         t[2] = -(alpha + gama);
     }
-    void t3t4() {
+    private void t3t4() {
         Vector3D vREALT4RotatingAxis = Vector3D.crossP(vL34, vL5);
         Vector3D vT4RotatingAxisInXYPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
         t[3] = Vector3D.vAngle(vREALT4RotatingAxis, vT4RotatingAxisInXYPlane);
@@ -83,5 +84,11 @@ public class PositionAngleV2 {
         "T3: " + radDeg(t[3]) + "\n" + 
         "T4: " + radDeg(t[4]) + "\n" + 
         "T5: " + radDeg(t[5]);
+    }
+    private static double radDeg(double rad) {
+        return (180*rad)/(Math.PI);
+    }
+    private static double degRad(double deg) {
+        return (Math.PI*deg)/180;
     }
 }
