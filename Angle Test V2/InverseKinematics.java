@@ -93,10 +93,12 @@ public class InverseKinematics {
             Math.pow(vL34.norm(),2);
 
         Vector3D vPL5 = Vector3D.add(vL5, Vector3D.scale(vL34, x));
-        t[3] = Vector3D.vAngle(vPL5, vHorAxisInPlane);
+        t[3] = -Vector3D.vAngle(vPL5, vHorAxisInPlane);
 
 
-        t[4] = Vector3D.vAngle(vL34, vL5) + (Math.PI/2); // IST ZU 100% RICHTIG !!!
+        // t[4] = (-Vector3D.vAngle(vL34, vL5)) + (Math.PI); // IST ZU 100% RICHTIG !!!
+        t[4] = (-Vector3D.vAngle(vPL5, vL34))+Math.PI/2; // IST ZU 100% RICHTIG !!!
+
     }
 
     @Override

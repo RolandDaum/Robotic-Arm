@@ -28,8 +28,8 @@ public class Vector3D extends Vector {
         if (v1.norm() == 0 || v2.norm() == 0) {
             throw new IllegalArgumentException("No angle between zero vectors");
         }
-        return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
-        // return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
+        // return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
+        return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
     }
     public static double vAngleN(Vector3D v1, Vector3D v2, Vector n) {
         v1.unitize();
