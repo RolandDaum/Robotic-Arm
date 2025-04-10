@@ -185,7 +185,16 @@ public class Vector {
 
     @Override
     public String toString() {
-        String str = "Vektor(Punkt({";
+        // String str = "Vektor(Punkt({";
+        // for (int i = 0; i < v.length; i++) {
+        //     if (i == v.length-1) {
+        //         str += v[i];
+        //     } else {
+        //         str += v[i] + ",";
+        //     }
+        // }
+        // return str + "}))";
+        String str = "{";
         for (int i = 0; i < v.length; i++) {
             if (i == v.length-1) {
                 str += v[i];
@@ -193,15 +202,6 @@ public class Vector {
                 str += v[i] + ",";
             }
         }
-        return str + "}))";
-        // String str = "(";
-        // for (int i = 0; i < v.length; i++) {
-        //     if (i == v.length-1) {
-        //         str += v[i];
-        //     } else {
-        //         str += v[i] + "|";
-        //     }
-        // }
-        // return str + ")";
+        return str + "}";
     }
 }

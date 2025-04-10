@@ -30,6 +30,16 @@ public class ForwardKinematics {
     public Vector3D getvD() {
         return Vector3D.unitize(vL5);
     }
+    public ArrayList<Vector3D> getV() {
+        ArrayList<Vector3D> v = new ArrayList<Vector3D>();
+        v.add(vL0);
+        v.add(vL1);
+        v.add(vL2);
+        v.add(vL3);
+        v.add(vL4);
+        v.add(vL5);
+        return v;
+    }
 
     public void calc() {
        vl0();
@@ -39,51 +49,10 @@ public class ForwardKinematics {
        vl4();
        vl5();
 
-       System.out.println("vL0: " + vL0);
-       System.out.println("vL1: " + vL1);
-       System.out.println("vL2: " + vL2);
-       System.out.println("vL3: " + vL3);
-       System.out.println("vL4: " + vL4);
-       System.out.println("vL5: " + vL5 + "\n");
-        System.out.println("T1: " + radDeg(Vector3D.vAngle(vL1, vL2)));
-        System.out.println("T2: " + radDeg(Vector3D.vAngle(vL2, vL3)));
-        System.out.println("T4: " + radDeg(Vector3D.vAngle(vL4, vL5)));
 
-
-    System.out.println("\n\n\n");
-
-    Vector3D vL0vL1 = Vector3D.add(vL0, vL1);
-
-    System.out.println(vL0vL1);
-
-    System.out.println(
-        "Gerade(Punkt({" + 
-        vL0vL1.x() + "," + 
-        vL0vL1.y() + "," + 
-        vL0vL1.z() + "})," + vL2 + "))");
-    
-    Vector3D vL0L1L2 = Vector3D.add(vL0vL1, vL2);
-
-    System.out.println(
-        "Gerade(Punkt({" + 
-        vL0L1L2.x() + "," + 
-        vL0L1L2.y() + "," + 
-        vL0L1L2.z() + "})," + vL3 + "))");
-
-    Vector3D vL0L1L2L3L4 = Vector3D.add(Vector3D.add(vL0L1L2, vL3), vL4);
-
-    System.out.println(
-        "Gerade(Punkt({" + 
-        vL0L1L2L3L4.x() + "," + 
-        vL0L1L2L3L4.y() + "," + 
-        vL0L1L2L3L4.z() + "})," + vL5 + "))");
-
-    Vector3D vL0L1L2L3L4L5 = Vector3D.add(vL0L1L2L3L4, vL5);
-    System.out.println(vL0L1L2L3L4L5);
-    
-
-    System.out.println("\n\n\n");
-
+       System.out.println("vL2:  " + vL2);
+       System.out.println("vL34:  " + Vector3D.add(vL3, vL4));
+       System.out.println("vL5:  " + vL5);
 
     }
 
@@ -98,7 +67,6 @@ public class ForwardKinematics {
         vL2.rotate(new Vector3D(1,0,0), -t[1]);
         vL2.rotate(new Vector3D(0,0,1), -t[0]);
         vL2.scaleToSize(l[2]);
-        System.out.println(vL2 + "\n");
     }
     private void vl3() {
         vL3 = new Vector3D(vL2);
@@ -120,13 +88,6 @@ public class ForwardKinematics {
     public String toString() {
         String str = "Point: " + getvP().toString() + "\n";
         str += "Direction: " + getvD().toString() + "\n\n";
-        // str += vL0.toString() + "\n";
-        // str += vL1.toString() + "\n";
-        // str += vL2.toString() + "\n";
-        // str += vL3.toString() + "\n";
-        // str += vL4.toString() + "\n";
-        // str += vL5.toString() + "\n";
-
         return str;
     }
 

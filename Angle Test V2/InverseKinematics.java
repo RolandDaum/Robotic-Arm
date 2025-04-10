@@ -33,24 +33,33 @@ public class InverseKinematics {
         t0();
         t1t2();
 
-        vL2 = new Vector3D(
-            Math.sin(t[0]) * Math.sin(t[1]) * l[2],
-            Math.cos(t[0]) * Math.sin(t[1]) * l[2],
-            Math.cos(t[1]) * l[2]
-        );
-        vL34 = new Vector3D(
-            Math.sin(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
-            Math.cos(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
-            Math.cos(t[2]-t[1]) * (l[3]+l[4])
-        );
+        // vL2 = new Vector3D(
+        //     Math.sin(t[0]) * Math.sin(t[1]) * l[2],
+        //     Math.cos(t[0]) * Math.sin(t[1]) * l[2],
+        //     Math.cos(t[1]) * l[2]
+        // );
+        // vL34 = new Vector3D(
+        //     Math.sin(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
+        //     Math.cos(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
+        //     Math.cos(t[2]-t[1]) * (l[3]+l[4])
+        // );
+        vL2 = new Vector3D(0,0,1);
+        vL2.rotate(new Vector3D(1,0,0), -t[1]);
+        vL2.rotate(new Vector3D(0,0,1), -t[0]);
+        vL2.scaleToSize(l[2]);
+
+        vL34 = new Vector3D(vL2);
+        vL34.rotate(Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), -t[0]), t[2]);
+        vL34.scaleToSize(l[3]+l[4]);
 
         t3t4();
 
+        
+        System.out.println(
+            "Gerade(Punkt(" + Vector3D.add(vQ, new Vector3D(0,0,l[0]+l[1])) + "), Vektor(Punkt(" + vL5 + ")))"
+        );
+        
 
-        System.out.println("vL2: " + vL2);
-        System.out.println("vL3: " + Vector3D.scaleToSize(vL34,l[3]));
-        System.out.println("vL4: " + Vector3D.scaleToSize(vL34,l[4]));
-        System.out.println("vL5: " + vL5 + "\n");
     }
 
     private void t0() {
@@ -68,11 +77,26 @@ public class InverseKinematics {
         t[2] = -(alpha + gama);
     }
     private void t3t4() {
-        Vector3D vREALT4RotatingAxis = Vector3D.crossP(vL34, vL5);
-        Vector3D vT4RotatingAxisInXYPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
-        t[3] = Vector3D.vAngle(vREALT4RotatingAxis, vT4RotatingAxisInXYPlane);
+        // Vector3D vREALT4RotatingAxis = Vector3D.crossP(vL34, vL5);
+        // Vector3D vT4RotatingAxisInXYPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
+        // t[3] = Vector3D.vAngle(vREALT4RotatingAxis, vT4RotatingAxisInXYPlane);
+        // System.out.println(radDeg(t[3]));
 
-        t[4] = -Vector3D.vAngle(vL34, vL5);
+
+        Vector3D vHorAxisInPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
+
+        double x = 
+            Vector3D.dotP(
+                vL34, 
+                Vector3D.subtract(vL5, Vector3D.subtract(vD, vL5))
+            )/
+            Math.pow(vL34.norm(),2);
+
+        Vector3D vPL5 = Vector3D.add(vL5, Vector3D.scale(vL34, x));
+        t[3] = Vector3D.vAngle(vPL5, vHorAxisInPlane);
+
+
+        t[4] = Vector3D.vAngle(vL34, vL5) + (Math.PI/2); // IST ZU 100% RICHTIG !!!
     }
 
     @Override
