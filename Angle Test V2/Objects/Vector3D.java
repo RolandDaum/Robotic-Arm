@@ -31,15 +31,25 @@ public class Vector3D extends Vector {
         // return Math.acos(Vector3D.dotP(v1, v2)/(v1.norm()*v2.norm()));
         return Math.atan2(Vector3D.norm(Vector3D.crossP(v1, v2)), Vector3D.dotP(v1, v2));
     }
-    public static double vAngleN(Vector3D v1, Vector3D v2, Vector n) {
-        v1.unitize();
-        v2.unitize();
-        double angle = Math.acos(Vector3D.dotP(v1, v2));
-        Vector3D cross = Vector3D.crossP(v1, v2);
-        if (Vector3D.dotP(n,cross) < 0) {
-            angle = -angle;
+    /**
+     * NOTE !!! The normal vector n must not arise from the crossP of a x b, cause this will make the angle always positive.
+     * @param v1 
+     * @param v2
+     * @param n if made with crossP return angle always positive
+     * @return
+     */
+    public static double vAngleN(Vector3D v1, Vector3D v2, Vector3D n) {
+        // v1.unitize();
+        // v2.unitize();
+        // n.unitize();
+        double angle = vAngle(v1, v2);
+        if (subtract(v2, rotate(v1, n, angle)).norm() < subtract(v2, rotate(v1, n, -angle)).norm()) {
+            return angle;
+        } else {
+            return -angle;
         }
-        return angle;
+
+
     }
     public static Vector3D crossP(Vector3D v1, Vector3D v2) {
         return new Vector3D(

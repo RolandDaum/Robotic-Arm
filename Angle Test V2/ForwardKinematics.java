@@ -48,12 +48,6 @@ public class ForwardKinematics {
        vl3();
        vl4();
        vl5();
-
-
-    //    System.out.println("vL2:  " + vL2);
-    //    System.out.println("vL34:  " + Vector3D.add(vL3, vL4));
-    //    System.out.println("vL5:  " + vL5);
-
     }
 
     private void vl0() {
