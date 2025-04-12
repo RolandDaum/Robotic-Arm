@@ -50,9 +50,9 @@ public class ForwardKinematics {
        vl5();
 
 
-       System.out.println("vL2:  " + vL2);
-       System.out.println("vL34:  " + Vector3D.add(vL3, vL4));
-       System.out.println("vL5:  " + vL5);
+    //    System.out.println("vL2:  " + vL2);
+    //    System.out.println("vL34:  " + Vector3D.add(vL3, vL4));
+    //    System.out.println("vL5:  " + vL5);
 
     }
 
@@ -87,7 +87,7 @@ public class ForwardKinematics {
     @Override
     public String toString() {
         String str = "Point: " + getvP().toString() + "\n";
-        str += "Direction: " + getvD().toString() + "\n\n";
+        str += "Direction: " + getvD().toString();
         return str;
     }
 

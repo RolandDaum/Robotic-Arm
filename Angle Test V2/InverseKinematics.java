@@ -55,9 +55,9 @@ public class InverseKinematics {
         t3t4();
 
         
-        System.out.println(
-            "Gerade(Punkt(" + Vector3D.add(vQ, new Vector3D(0,0,l[0]+l[1])) + "), Vektor(Punkt(" + vL5 + ")))"
-        );
+        // System.out.println(
+        //     "Gerade(Punkt(" + Vector3D.add(vQ, new Vector3D(0,0,l[0]+l[1])) + "), Vektor(Punkt(" + vL5 + ")))"
+        // );
         
 
     }
@@ -83,21 +83,32 @@ public class InverseKinematics {
         // System.out.println(radDeg(t[3]));
 
 
-        Vector3D vHorAxisInPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
+        // Vector3D vHorAxisInPlane = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), t[0]);
 
-        double x = 
-            Vector3D.dotP(
-                vL34, 
-                Vector3D.subtract(vL5, Vector3D.subtract(vD, vL5))
-            )/
-            Math.pow(vL34.norm(),2);
+        // double x = 
+        //     Vector3D.dotP(
+        //         vL34, 
+        //         Vector3D.subtract(vL5, Vector3D.subtract(vD, vL5))
+        //     )/
+        //     Math.pow(vL34.norm(),2);
 
-        Vector3D vPL5 = Vector3D.add(vL5, Vector3D.scale(vL34, x));
-        t[3] = -Vector3D.vAngle(vPL5, vHorAxisInPlane);
+        // Vector3D vPL5 = Vector3D.add(vL5, Vector3D.scale(vL34, x));
+        // t[3] = -Vector3D.vAngle(vPL5, vHorAxisInPlane);
 
 
-        // t[4] = (-Vector3D.vAngle(vL34, vL5)) + (Math.PI); // IST ZU 100% RICHTIG !!!
-        t[4] = (-Vector3D.vAngle(vPL5, vL34))+Math.PI/2; // IST ZU 100% RICHTIG !!!
+        // // t[4] = (-Vector3D.vAngle(vL34, vL5)) + (Math.PI); // IST ZU 100% RICHTIG !!!
+        // t[4] = (-Vector3D.vAngle(vPL5, vL34))+Math.PI/2; // IST ZU 100% RICHTIG !!!
+
+        Vector3D vHor = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), -t[0]);
+        Vector3D vAxis = Vector3D.crossP(vL34, vD);
+        t[3] = -Vector3D.vAngle(vHor, vAxis);
+
+
+        t[4] = Vector3D.vAngle(vL34, vD);
+        
+        System.out.println("\n--------------------------------\n");
+
+
 
     }
 
