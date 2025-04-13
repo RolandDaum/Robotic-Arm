@@ -49,14 +49,7 @@ public class InverseKinematics {
         vL34.rotate(Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), -t[0]), t[2]);
         vL34.scaleToSize(l[3]+l[4]);
 
-        t3t4();
-
-        
-        // System.out.println(
-        //     "Gerade(Punkt(" + Vector3D.add(vQ, new Vector3D(0,0,l[0]+l[1])) + "), Vektor(Punkt(" + vL5 + ")))"
-        // );
-        
-
+        t3t4t5();
     }
 
     private void t0() {
@@ -73,7 +66,7 @@ public class InverseKinematics {
         t[1] = beta - alpha;
         t[2] = -(alpha + gama);
     }
-    private void t3t4() {
+    private void t3t4t5() {
         Vector3D vHor = Vector3D.rotate(new Vector3D(1,0,0), new Vector3D(0,0,1), -t[0]);
 
         Vector3D vAxis = Vector3D.crossP(vL34, vD);
@@ -82,6 +75,8 @@ public class InverseKinematics {
 
         Vector3D vNvAxis = Vector3D.rotate(vHor, vL34, -t[3]); // If this was made with crossP, the vAN method would only return positiv angles
         t[4] = Vector3D.vAngleN(vL34, vD, vNvAxis);
+
+        t[5] = Vector3D.vAngleN(new Vector3D(-vL5.y()/vL5.x(),1,0), vAxis, vL5);
     }
 
     @Override
