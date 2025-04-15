@@ -1,6 +1,6 @@
 # Robot Arm - Label
 
-![Robot Arm - Label](E:\Robotic%20Arm\docs\images\Arm%20Label.png)
+![Robot Arm - Label](../docs\images\Arm%20Label.png)
 
 ### Angles
 
@@ -54,7 +54,7 @@ This puts a part of the arm into two dimensions, which is later useful to calcul
 
 The Rotation Angle $\Theta_0$ is the projection of the $\vec{v_Q}$ onto the $\text{x-y}$ Plane, which then can be broken down into a triangle in which we can calculate the $\Theta_0$.
 
-![Theta0SVG](E:\Robotic%20Arm\docs\images\T0.svg)
+![Theta0SVG](../docs\images\T0.svg)
 
 Now that we have a triangle we can calculate the angle in a range from $0°$up to $360°$ with the help of the atan2 function:
 
@@ -66,7 +66,7 @@ $$
 
 Since the $\vec{vQ}$ made a part of the arm into a 2D plane, we can solve for $\Theta_1, \Theta_2$ with the help of some geometry and a triangle.
 
-![T1T2](E:\Robotic%20Arm\docs\images\T1T2.svg)
+![T1T2](../docs\images\T1T2.svg)
 
 $$
 \left| 
@@ -132,7 +132,7 @@ $\Theta_3,\Theta_4$ are used to set the direction of the $\vec{v_D}$ direction v
 
 Normally the angle between two vectors is only between $0°$ and $180°$, because we have no way of differentiate between a $45°$ or $-45°=315°$  angle because it is the same from the front and/or back perspective. By adding a set $\vec{n}$ we can look at both vectors from one side and therefore determine if the angle is greater or less then $180°$
 
-<img src="file:///E:/Robotic%20Arm/docs/images/vAngleN.svg" title="" alt="vAngleN" width="665">
+<img src="../docs/images/vAngleN.svg" title="" alt="vAngleN" width="665">
 
 First we calculate the angle between $\vec{a}$ and $\vec{b}$ in the common way:
 
@@ -165,7 +165,7 @@ $$
 
 The $\Theta_3$ Rotation is the angle between the horizontal $\Theta_4$ rotation Axis and the actual $\Theta_4$ rotation axis which is the horizontal one, rotated $\Theta_3$ degrees around the $\vec{v_{L3}}$ or $\vec{v_{L4}}$ axis.
 
-<img title="" src="file:///E:/Robotic%20Arm/docs/images/T3.svg" alt="Theta3" width="690">
+<img title="" src="../docs/images/T3.svg" alt="Theta3" width="690">
 
 The horizontal axis which we call $\vec{v_{Hor}}$ has the same direction as the $x\text{-Axis}$ vector rotated $\Theta_0$ degrees around the $z\text{-Axis}$.
 
@@ -191,7 +191,7 @@ $$
 
 The $\Theta_4$ rotation angle is the one between $\vec{v_{L3}}$ and $\vec{v_D}$ with $\vec{v_{Axis}}$ as the $\vec{n}$.
 
-![T4](E:\Robotic%20Arm\docs\images\T4.svg)
+![T4](../docs\images\T4.svg)
 
 But since $\vec{v_{Axis}}$ was created via a cross product we have to recreate it with the rotation of $\vec{v_{Hor}}$ $\Theta_3$ degrees around the $\vec{v_{L3}}$ axis, else we only get an angle in the range of $0°$ up to $180°$.
 
@@ -211,7 +211,7 @@ The last angle is only for the rotation of the $\vec{v_{L5}}$ around it's own ax
 
 The only really practical thing to do with it, is to calculate the angle in a way that the fixed cross axis of the $\vec{v_{L5}}$ is horizontally aligned.
 
-<img src="file:///E:/Robotic%20Arm/docs/images/T5.svg" title="" alt="T5" width="498">
+<img src="../docs/images/T5.svg" title="" alt="T5" width="498">
 
 We can construct two normal planes which intersection vector is the horizontal aligned cross vector, rotated around the $\vec{v_D}$.
 
