@@ -30,16 +30,6 @@ public class InverseKinematics {
         t0();
         t1t2();
 
-        // vL2 = new Vector3D(
-        //     Math.sin(t[0]) * Math.sin(t[1]) * l[2],
-        //     Math.cos(t[0]) * Math.sin(t[1]) * l[2],
-        //     Math.cos(t[1]) * l[2]
-        // );
-        // vL34 = new Vector3D(
-        //     Math.sin(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
-        //     Math.cos(t[0]) * Math.sin(t[2]-t[1]) * (l[3]+l[4]),
-        //     Math.cos(t[2]-t[1]) * (l[3]+l[4])
-        // );
         vL2 = new Vector3D(0,0,1);
         vL2.rotate(new Vector3D(1,0,0), -t[1]);
         vL2.rotate(new Vector3D(0,0,1), -t[0]);
@@ -53,7 +43,7 @@ public class InverseKinematics {
     }
 
     private void t0() {
-        t[0] = Math.atan2(vQ.c(0),vQ.c(1));
+        t[0] = Math.atan2(vQ.x(),vQ.y());
     }
     private void t1t2() {
         double vQnorm = vQ.norm();
@@ -73,10 +63,16 @@ public class InverseKinematics {
         t[3] = -Vector3D.vAngleN(vHor, vAxis, vL34);
 
 
-        Vector3D vNvAxis = Vector3D.rotate(vHor, vL34, -t[3]); // If this was made with crossP, the vAN method would only return positiv angles
+        Vector3D vNvAxis = Vector3D.rotate(vHor, vL34, -t[3]); // If this was made with crossP, the vAn method would only return positiv angles
+
         t[4] = Vector3D.vAngleN(vL34, vD, vNvAxis);
 
-        t[5] = Vector3D.vAngleN(new Vector3D(-vL5.y()/vL5.x(),1,0), vAxis, vL5);
+        Vector3D vRotHor = new Vector3D(-vL5.y()/vL5.x(),1,0);
+        if (Double.isInfinite(vRotHor.x())) {
+            vRotHor = new Vector3D(vRotHor.y(),0,0);
+        }
+        t[5] = Vector3D.vAngleN(vRotHor, Vector3D.crossP(vD, vAxis), vL5);
+        
     }
 
     @Override
