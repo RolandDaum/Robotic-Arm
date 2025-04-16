@@ -12,12 +12,12 @@
 
 - $L_0, L_1, L_2, L_3, L_4, L_5$
 - Length of each of the six arm segments.
-- $\vec{v_{L2}}, \vec{v_{L3}}$ are collinear because they both rotate around their own/shared axis.
 
-##### Arm Vectors
+### Arm Vectors
 
 - $\vec{v_{L0}}, \vec{v_{L1}}, \vec{v_{L2}}, \vec{v_{L3}}, \vec{v_{L4}}, \vec{v_{L5}}$
 - These vectors have the length of the corresponding arm segments and point in the arm direction, with the $\Theta_n$ rotation center as the origin of the vector.
+- $\vec{v_{L2}}, \vec{v_{L3}}$ are collinear because they both rotate around their own/shared axis.
 
 ### Point and Direction
 
@@ -29,27 +29,37 @@
 # Inverse Kinematics
 
 ## Table of Contents
-- [$𝑣_Q$ – Introduction](#--introduction)
-- [$\Theta_0$ – Rotation](#--rotation)
+- [vQ – Introduction](#--introduction)
+- [Θ0 – Rotation](#--rotation)
 - [2D Wrist Position](#---rotation--2d-wrist-position)
-- [$\Theta_3$,$\Theta_4$,$\Theta_5$ – Tip Rotation](#--tip-rotation)
+- [Θ3,Θ4,Θ5 – Tip Rotation](#--tip-rotation)
   - [Vector Angle Using a Normal Vector](#vector-angle--with)
-  - [$\Theta_3$ – Rotation Around Horizontal Axis](#--rotation-1)
-  - [$\Theta_4$ – Rotation Toward Direction Vector](#--rotation-2)
-  - [$\Theta_5$ – Cross Axis Leveling](#--rotation-3)
+  - [Θ3 – Rotation Around Horizontal Axis](#--rotation-1)
+  - [Θ4 – Rotation Toward Direction Vector](#--rotation-2)
+  - [Θ5 – Cross Axis Leveling](#--rotation-3)
 
 
 ## $\vec{v_Q}$ - Introduction
 
 $$
-\vec{v_Q} = \vec{v_P} - \vec{v_D} - \begin{pmatrix} 0 \\ 0 \\ L_0 + L_1 \end{pmatrix}
-$$
+\vec{v_Q} = \vec{v_P} - \vec{v_D} - 
+\begin{pmatrix}
+0\\
+0\\
+L_0 + L_1
+\end{pmatrix}
+$$  
 
 $\vec{v_Q}$ is the direct vector from the rotation center of $\Theta_1$ to $\Theta_4$, always lying in a plane with a normal vector:
 
 $$
-\vec{n} = \begin{pmatrix} x \\ y \\ 0 \end{pmatrix}
-$$
+\vec{n} = 
+\begin{pmatrix}
+x\\
+y\\
+0
+\end{pmatrix}
+$$  
 
 This places a portion of the arm into two dimensions, which is later useful for calculating $\Theta_1, \Theta_2$.
 
@@ -61,11 +71,9 @@ The rotation angle $\Theta_0$ is derived from the projection of $\vec{v_Q}$ onto
 
 Using the atan2 function, the angle can be determined within a range of $0^\circ$ to $360^\circ$:
 
-$$
-\Theta_0 = \tan^{-1}_2\left(\frac{v_{Qx}}{v_{Qy}}\right)
-$$
+$$\Theta_0 = tan2^{-1}(v_{Qx}, v_{Qy})$$  
 
-## $\Theta_1$,$\Theta_2$ - Rotation | 2D Wrist Position
+## $\Theta_1$, $\Theta_2$ - Rotation | 2D Wrist Position
 
 With $\vec{v_Q}$ lying in a 2D plane, we can calculate $\Theta_1$ and $\Theta_2$ using triangle geometry:
 
@@ -76,19 +84,19 @@ $$
 (x \cdot |\vec{v_Q}|)^2 + h^2 = L_2^2 \\
 ((1 - x) \cdot |\vec{v_Q}|)^2 + h^2 = (L_3 + L_4)^2
 \end{cases}
-$$
+$$  
 
 Solving for $x$:
 
 $$
 x = \frac{|\vec{v_Q}|^2 + L_2^2 - (L_3 + L_4)^2}{2 \cdot |\vec{v_Q}|^2}
-$$
+$$  
 
 Now we compute:
 
 $$
 h = \sqrt{L_2^2 - (x \cdot |\vec{v_Q}|)^2}
-$$
+$$  
 
 And the auxiliary angles:
 
@@ -118,7 +126,7 @@ $$
 
 These angles define the orientation of the arm's end-effector. We use vector angles for computation.
 
-#### Vector Angle $0^\circ$–$360^\circ$ with $\vec{n}$
+#### Vector Angle $0^°$ – $360^°$ with $\vec{n}$
 
 To distinguish between $45^\circ$ and $315^\circ$, we use a normal vector $\vec{n}$:
 
@@ -139,8 +147,10 @@ $$
 Then check:
 
 $$
-|\vec{b} - \vec{a}_{+\Theta}| \approx 0 \rightarrow +\Theta \\
-|\vec{b} - \vec{a}_{-\Theta}| \approx 0 \rightarrow -\Theta
+|\vec{b} - \vec{a_{+\Theta}}| \approx 0 \rightarrow +\Theta
+$$
+$$
+|\vec{b} - \vec{a_{-\Theta}}| \approx 0 \rightarrow -\Theta
 $$
 
 We denote this process:
@@ -207,9 +217,18 @@ $$
 Choose $x_y = 1$:
 
 $$
-\vec{x}=\begin{pmatrix}\frac{-v_{Dy}*x_y}{v_{Dx}}\\x_y\\0\end{pmatrix}
+\vec{x}=
+\begin{pmatrix}
+\frac{-v_{Dy}*x_y}{v_{Dx}}\\
+x_y\\
+0
+\end{pmatrix}
 \rightarrow
-\begin{pmatrix}\frac{-v_{Dy}}{v_{Dx}}\\1\\0\end{pmatrix}
+\begin{pmatrix}
+\frac{-v_{Dy}}{v_{Dx}}\\
+1\\
+0
+\end{pmatrix}
 $$
 
 Then:
@@ -222,9 +241,19 @@ $$
 In special cases we have to change $\vec{x}$ manually:
 
 $$
-\vec{x}=\begin{pmatrix}\infty\\1\\0\end{pmatrix}
+\vec{x}=
+\begin{pmatrix}
+\infty\\
+1\\
+0
+\end{pmatrix}
 \rightarrow
-\vec{x}=\begin{pmatrix}1\\0\\0\end{pmatrix}
+\vec{x}=
+\begin{pmatrix}
+1\\
+0\\
+0
+\end{pmatrix}
 $$
 
 ---
