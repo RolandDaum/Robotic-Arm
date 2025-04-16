@@ -1,4 +1,4 @@
-# Robot Arm - Label
+# Kinematics - Robot Arm
 
 ![Label](/docs/images/Label.svg)
 
