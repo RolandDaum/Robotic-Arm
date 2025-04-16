@@ -29,14 +29,14 @@
 # Inverse Kinematics
 
 ## Table of Contents
-- [vQ – Introduction](#--introduction)
-- [Θ0 – Rotation](#--rotation)
-- [2D Wrist Position](#---rotation--2d-wrist-position)
-- [Θ3,Θ4,Θ5 – Tip Rotation](#--tip-rotation)
-  - [Vector Angle Using a Normal Vector](#vector-angle--with)
-  - [Θ3 – Rotation Around Horizontal Axis](#--rotation-1)
-  - [Θ4 – Rotation Toward Direction Vector](#--rotation-2)
-  - [Θ5 – Cross Axis Leveling](#--rotation-3)
+- $𝑣_Q$ – Introduction
+- $\Theta_0$ – Rotation
+- 2D Wrist Position
+- $\Theta_3$, $\Theta_4$, $\Theta_5$ – Tip Rotation
+  - Vector Angle Using a Normal Vector
+  - $\Theta_3$ – Rotation Around Horizontal Axis
+  - $\Theta_4$ – Rotation Toward Direction Vector
+  - $\Theta_5$ – Cross Axis Leveling
 
 
 ## $\vec{v_Q}$ - Introduction
